@@ -14,3 +14,5 @@ const getRandomInteger = (min, max) => {
 };
 
 const getCheckLengthString = (str) => str.length < 140;
+
+// Пробую на маке запушить
