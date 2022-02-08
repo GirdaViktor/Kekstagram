@@ -25,3 +25,11 @@ export const getShuffle = (arr) => {
 
   return newArr;
 };
+
+export const isEscapeKey = (evt) => {
+  return evt.key === 'Escape';
+};
+
+export const isEnterKey = (evt) => {
+  return evt.key === 'Enter';
+};
