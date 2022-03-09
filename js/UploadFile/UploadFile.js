@@ -1,6 +1,7 @@
 import {isEscapeKey} from '../Utils/Utils.js';
 
 const uploadFile = document.querySelector('#upload-file');
+const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadPreviewContainer = document.querySelector('.img-upload__preview-container');
 const scaleControlValue = document.querySelector('.scale__control--value');
@@ -9,6 +10,8 @@ const STEP_RESIZE = 25;
 const MIN_PREVIEW_SIZE = 25;
 const MAX_PREVIEW_SIZE = 100;
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
+const textDescription = document.querySelector('.text__description');
+const textHashtags = document.querySelector('.text__hashtags');
 
 const resizePreview = (evt) => {
   let currentValue = parseInt(scaleControlValue.value, 10);
@@ -42,6 +45,27 @@ const closeUploadEscPress = (evt) => {
   }
 };
 
+const clearFormItem = (evt) => {
+  if (evt.target.closest('input') || evt.target.closest('textarea')) {
+    if(isEscapeKey(evt)) {
+      evt.stopPropagation();
+      evt.target.value = '';
+      evt.target.currentValue = '';
+    }
+  }
+};
+
+const validationComment = () => {
+  if (textDescription.validity.tooLong) {
+    textDescription.setCustomValidity('Комментарий не может превышать 140 символов');
+  }
+};
+
+const validationHashTag = (str) => {
+  console.log(str);
+};
+
+textDescription.addEventListener('invalid', validationComment);
 
 const onOpenUploadOverlay = () => {
   imgUploadOverlay.classList.remove('hidden');
@@ -51,6 +75,12 @@ const onOpenUploadOverlay = () => {
   scaleControlValue.currentValue = '100%';
   document.addEventListener('keydown', closeUploadEscPress);
   imgUploadCancel.addEventListener('click', closeOverlay);
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    validationHashTag(textHashtags.value);
+  });
+
+  imgUploadForm.addEventListener('keydown', clearFormItem);
 };
 
 uploadFile.addEventListener('change', onOpenUploadOverlay);
