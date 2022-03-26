@@ -11,7 +11,7 @@ const MIN_PREVIEW_SIZE = 25;
 const MAX_PREVIEW_SIZE = 100;
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const textDescription = document.querySelector('.text__description');
-const textHashtags = document.querySelector('.text__hashtags');
+const textHashTags = document.querySelector('.text__hashtags');
 
 const resizePreview = (evt) => {
   let currentValue = parseInt(scaleControlValue.value, 10);
@@ -35,11 +35,11 @@ const closeOverlay = () => {
 
   uploadFile.value = '';
   uploadFile.currentValue = '';
-  document.removeEventListener('keydown', closeUploadEscPress);
+  document.removeEventListener('keydown', onCloseUploadEscPress);
   imgUploadCancel.removeEventListener('click', closeOverlay);
 };
 
-const closeUploadEscPress = (evt) => {
+const onCloseUploadEscPress = (evt) => {
   if(isEscapeKey(evt)) {
     closeOverlay();
   }
@@ -55,32 +55,83 @@ const clearFormItem = (evt) => {
   }
 };
 
+const checkDuplicates = (array) => (new Set(array)).size !== array.length;
+
 const validationComment = () => {
-  if (textDescription.validity.tooLong) {
+  if (textDescription.value.length > 140) {
     textDescription.setCustomValidity('Комментарий не может превышать 140 символов');
+  } else {
+    textDescription.setCustomValidity('');
   }
+
+  textDescription.reportValidity();
+};
+
+const validationHashTagCount = (arr) => {
+  let messageError = '';
+  if(arr.length > 5 ) {
+    messageError = 'Нельзя указать больше пяти хэш-тегов';
+  } else {
+    messageError = '';
+  }
+
+  return messageError;
 };
 
 const validationHashTag = (str) => {
-  console.log(str);
+  const RE = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
+  let messageError = '';
+
+  if (str[0] !== '#') {
+    messageError = 'хэш-тег начинается с символа # (решётка)';
+  } else {
+    if (str.length > 20) {
+      messageError = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
+    } else if (str.length === 1) {
+      messageError = 'хеш-тег не может состоять только из одной решётки';
+    } else {
+      if (!RE.test(str)) {
+        messageError = 'строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.;'
+      } else {
+        messageError = '';
+      }
+    }
+  }
+  return messageError;
 };
 
-textDescription.addEventListener('invalid', validationComment);
+const validationHashTags = () => {
+  const hashTagArr = textHashTags.value.toLowerCase().split(' ');
+  let message = '';
 
-const onOpenUploadOverlay = () => {
+  message = validationHashTagCount(hashTagArr);
+  hashTagArr.forEach((item) => {
+    if (checkDuplicates(hashTagArr)) {
+      message = 'хеш-теги не могут повторяться';
+    } else {
+      message = validationHashTag(item);
+    }
+  });
+
+  textHashTags.setCustomValidity(message);
+  textHashTags.reportValidity();
+};
+
+
+textDescription.addEventListener('input', validationComment);
+textHashTags.addEventListener('input', validationHashTags);
+
+const openUploadOverlay = () => {
   imgUploadOverlay.classList.remove('hidden');
   imgUploadPreviewContainer.addEventListener('click', resizePreview);
 
   scaleControlValue.value = '100%';
   scaleControlValue.currentValue = '100%';
-  document.addEventListener('keydown', closeUploadEscPress);
+
+  document.addEventListener('keydown', onCloseUploadEscPress);
   imgUploadCancel.addEventListener('click', closeOverlay);
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    validationHashTag(textHashtags.value);
-  });
 
   imgUploadForm.addEventListener('keydown', clearFormItem);
 };
 
-uploadFile.addEventListener('change', onOpenUploadOverlay);
+uploadFile.addEventListener('change', openUploadOverlay);
