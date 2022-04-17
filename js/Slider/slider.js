@@ -2,11 +2,17 @@ import '../Slider/slider.js';
 import {updatePreviewEffect} from '../UploadFile/UploadFile.js';
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+const imgPreview = document.querySelector('.img-upload__preview img');
 
 const getCurrentEffect = () => {
-  const imgPreview = document.querySelector('.img-upload__preview img');
-  const classNameEffect = imgPreview.className;
-  return classNameEffect.slice(classNameEffect.lastIndexOf('-') + 1);
+  let classNameEffect;
+  classNameEffect = 'none';
+
+  if(imgPreview.hasAttribute('class')) {
+    classNameEffect = imgPreview.className.slice(imgPreview.className.lastIndexOf('-') + 1);
+  }
+
+  return classNameEffect;
 };
 
 export const activeSlider = (effect) => {
@@ -29,6 +35,7 @@ export const activeSlider = (effect) => {
 
 export const destroySlider = () => {
   imgUploadEffectLevel.style = 'display: none';
+  imgPreview.style.filter = '';
   effectLevelSlider.noUiSlider.destroy();
 };
 

@@ -163,6 +163,7 @@ export const effectPreview = (effect) => {
     imgPreview.classList.add(`effects__preview--${effect}`);
     activeSlider(FILTER_RANGE[`${effect}`]);
   } else {
+    imgPreview.removeAttribute('class');
     destroySlider();
   }
 };
@@ -174,7 +175,6 @@ const onSelectEffect = (evt)=> {
 };
 
 export const updatePreviewEffect = (effect, value) => {
-  console.log(effect, value);
   switch (effect) {
     case 'chrome':
       imgPreview.style.filter = `grayscale(${value})`;
@@ -190,6 +190,10 @@ export const updatePreviewEffect = (effect, value) => {
       break;
     case 'phobos':
       imgPreview.style.filter = `blur(${value * 3}px)`;
+      break;
+    case 'none':
+      imgPreview.style.filter = '';
+      effectLevelElement.value = '';
       break;
     default:
       imgPreview.style.filter = '';
