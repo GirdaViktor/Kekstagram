@@ -1,10 +1,15 @@
 import {isEscapeKey} from '../Utils/Utils.js';
+import {activeSlider, destroySlider} from '../Slider/slider.js';
 
 const uploadFile = document.querySelector('#upload-file');
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadPreviewContainer = document.querySelector('.img-upload__preview-container');
+const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 const scaleControlValue = document.querySelector('.scale__control--value');
+const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectsList = document.querySelector('.effects__list');
+const effectLevelElement = document.querySelector('.effect-level__value');
 const imgPreview = document.querySelector('.img-upload__preview img');
 const STEP_RESIZE = 25;
 const MIN_PREVIEW_SIZE = 25;
@@ -12,6 +17,34 @@ const MAX_PREVIEW_SIZE = 100;
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const textDescription = document.querySelector('.text__description');
 const textHashTags = document.querySelector('.text__hashtags');
+
+const FILTER_RANGE = {
+  chrome: {
+    start: 0,
+    end: 1,
+    step: 0.1,
+  },
+  sepia: {
+    start: 0,
+    end: 1,
+    step: 0.1,
+  },
+  marvin: {
+    start: 0,
+    end: 100,
+    step: 1,
+  },
+  phobos: {
+    start: 0,
+    end: 3,
+    step: 0.1,
+  },
+  heat: {
+    start: 1,
+    end: 3,
+    step: 0.1,
+  },
+};
 
 const resizePreview = (evt) => {
   let currentValue = parseInt(scaleControlValue.value, 10);
@@ -37,6 +70,7 @@ const closeOverlay = () => {
   uploadFile.currentValue = '';
   document.removeEventListener('keydown', onCloseUploadEscPress);
   imgUploadCancel.removeEventListener('click', closeOverlay);
+  effectsList.removeEventListener('click', onSelectEffect);
 };
 
 const onCloseUploadEscPress = (evt) => {
@@ -91,7 +125,7 @@ const validationHashTag = (str) => {
       messageError = 'хеш-тег не может состоять только из одной решётки';
     } else {
       if (!RE.test(str)) {
-        messageError = 'строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.;'
+        messageError = 'строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.;';
       } else {
         messageError = '';
       }
@@ -117,14 +151,56 @@ const validationHashTags = () => {
   textHashTags.reportValidity();
 };
 
-
 textDescription.addEventListener('input', validationComment);
 textHashTags.addEventListener('input', validationHashTags);
+
+export const effectPreview = (effect) => {
+  imgPreview.className = '';
+  if (effect !== 'none') {
+    if (effectLevelSlider.closest('.noUi-target')) {
+      destroySlider();
+    }
+    imgPreview.classList.add(`effects__preview--${effect}`);
+    activeSlider(FILTER_RANGE[`${effect}`]);
+  } else {
+    destroySlider();
+  }
+};
+
+const onSelectEffect = (evt)=> {
+  if (evt.target.closest('input')) {
+    effectPreview(evt.target.closest('input').value);
+  }
+};
+
+export const updatePreviewEffect = (effect, value) => {
+  console.log(effect, value);
+  switch (effect) {
+    case 'chrome':
+      imgPreview.style.filter = `grayscale(${value})`;
+      break;
+    case 'sepia':
+      imgPreview.style.filter = `sepia(${value})`;
+      break;
+    case 'heat':
+      imgPreview.style.filter = `brightness(${value})`;
+      break;
+    case 'marvin':
+      imgPreview.style.filter = `invert(${value}%)`;
+      break;
+    case 'phobos':
+      imgPreview.style.filter = `blur(${value * 3}px)`;
+      break;
+    default:
+      imgPreview.style.filter = '';
+      effectLevelElement.value = '';
+  }
+};
 
 const openUploadOverlay = () => {
   imgUploadOverlay.classList.remove('hidden');
   imgUploadPreviewContainer.addEventListener('click', resizePreview);
-
+  imgUploadEffectLevel.style = 'display: none';
   scaleControlValue.value = '100%';
   scaleControlValue.currentValue = '100%';
 
@@ -132,6 +208,8 @@ const openUploadOverlay = () => {
   imgUploadCancel.addEventListener('click', closeOverlay);
 
   imgUploadForm.addEventListener('keydown', clearFormItem);
+
+  effectsList.addEventListener('click', onSelectEffect);
 };
 
 uploadFile.addEventListener('change', openUploadOverlay);
