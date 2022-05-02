@@ -1,4 +1,4 @@
-export const initialData = {
+const initialData = {
   countPreview: {
     start: 1,
     end: 25,
@@ -42,3 +42,5 @@ export const initialData = {
     max: 200,
   },
 };
+
+export {initialData};

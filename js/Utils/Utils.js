@@ -1,4 +1,9 @@
-export const getRandomInteger = (min, max) => {
+import {closeOverlay} from '../UploadFile/UploadFile.js';
+
+const ALERT_SHOW_TIME = 5000;
+const body = document.body;
+
+const getRandomInteger = (min, max) => {
   if (max === undefined) {
     max = min;
     min = 0;
@@ -13,9 +18,7 @@ export const getRandomInteger = (min, max) => {
   }
 };
 
-export const getCheckLengthString = (str) => str.length < 140;
-
-export const getShuffle = (arr) => {
+const getShuffle = (arr) => {
   const newArr = arr.slice();
 
   for (let i = newArr.length - 1; i > 0; i--) {
@@ -26,10 +29,70 @@ export const getShuffle = (arr) => {
   return newArr;
 };
 
-export const isEscapeKey = (evt) => {
+const isEscapeKey = (evt) => {
   return evt.key === 'Escape';
 };
 
-export const isEnterKey = (evt) => {
-  return evt.key === 'Enter';
+const deleteSuccessPopup = () => {
+  const popupSuccess = document.querySelector('.success__visible');
+  body.removeChild(popupSuccess);
 };
+
+const deleteErrorPopup = () => {
+  const popupError = document.querySelector('.error__visible');
+  body.removeChild(popupError);
+};
+
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 100;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+const onUploadSuccess = () => {
+  const uploadSuccess = document.querySelector('#success').content.querySelector('.success');
+
+  const successTemplate = uploadSuccess.cloneNode(true);
+  successTemplate.classList.add('success__visible');
+  successTemplate.querySelector('.success__button');
+
+  successTemplate.addEventListener('click', deleteSuccessPopup);
+  closeOverlay();
+  body.appendChild(successTemplate);
+};
+
+const onUploadError = () => {
+  const uploadError = document.querySelector('#error').content.querySelector('.error');
+
+  const errorTemplate = uploadError.cloneNode(true);
+  errorTemplate.classList.add('error__visible');
+  errorTemplate.querySelector('.error__button');
+
+  errorTemplate.addEventListener('click', deleteErrorPopup);
+  closeOverlay();
+  body.appendChild(errorTemplate);
+};
+
+const showMessage = () => {
+  const messageTemplate = document.querySelector('#messages').content.querySelector('.img-upload__message');
+
+  const messageElement = messageTemplate.cloneNode(true);
+  document.body.appendChild(messageElement);
+};
+
+export {getRandomInteger, getShuffle, isEscapeKey, onUploadSuccess, onUploadError, showMessage, showAlert};
