@@ -1,6 +1,6 @@
 import {showBigPicture} from '../BigPicture/BigPicture.js';
 
-export const getPicture = (obj) => {
+const getPicture = (obj) => {
   const picture  = document.querySelector('#picture').content.querySelector('.picture');
 
   const template = picture.cloneNode(true);
@@ -13,3 +13,5 @@ export const getPicture = (obj) => {
 
   return template;
 };
+
+export {getPicture};

@@ -1,6 +1,7 @@
 import {isEscapeKey} from '../Utils/Utils.js';
 import {activeSlider, destroySlider} from '../Slider/slider.js';
 import {clearFormItem, validationForm} from '../Validation/Validation.js';
+import {sendData} from '../NetworkData/NetworkData.js';
 
 const uploadFile = document.querySelector('#upload-file');
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -78,7 +79,7 @@ const onCloseUploadEscPress = (evt) => {
   }
 };
 
-export const effectPreview = (effect) => {
+const effectPreview = (effect) => {
   imgPreview.className = '';
   if (effect !== 'none') {
     if (effectLevelSlider.closest('.noUi-target')) {
@@ -98,7 +99,7 @@ const onSelectEffect = (evt)=> {
   }
 };
 
-export const updatePreviewEffect = (effect, value) => {
+const updatePreviewEffect = (effect, value) => {
   switch (effect) {
     case 'chrome':
       imgPreview.style.filter = `grayscale(${value})`;
@@ -142,4 +143,17 @@ const openUploadOverlay = () => {
   effectsList.addEventListener('click', onSelectEffect);
 };
 
+const setPictureFormSubmit = (onSuccess, onError) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(
+      () => onSuccess(),
+      () => onError(),
+      new FormData(evt.target),
+    );
+  });
+};
+
 uploadFile.addEventListener('change', openUploadOverlay);
+
+export {closeOverlay, effectPreview, updatePreviewEffect, setPictureFormSubmit};

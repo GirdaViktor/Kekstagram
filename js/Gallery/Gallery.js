@@ -1,6 +1,6 @@
 import {getPicture} from '../Picture/Picture.js';
 
-export const getGallery = (arr) => {
+const getGallery = (arr) => {
   const pictures = document.querySelector('.pictures');
   const fragment = document.createDocumentFragment();
 
@@ -10,3 +10,5 @@ export const getGallery = (arr) => {
 
   pictures.appendChild(fragment);
 };
+
+export {getGallery};

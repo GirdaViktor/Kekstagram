@@ -1,4 +1,4 @@
-export const createComment = (obj) => {
+const createComment = (obj) => {
   const comment = document.createElement('li');
   const avatar = document.createElement('img');
   const socialText = document.createElement('p');
@@ -16,3 +16,6 @@ export const createComment = (obj) => {
 
   return comment;
 };
+
+export {createComment};
+

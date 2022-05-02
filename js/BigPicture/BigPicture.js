@@ -4,7 +4,7 @@ import {comments} from '../Comments/Comments.js';
 const bigPicture = document.querySelector('.big-picture');
 const body = document.body;
 
-export const showBigPicture = (obj) => {
+const showBigPicture = (obj) => {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
 
@@ -34,3 +34,5 @@ const closeBigPictureEscKeydown = (evt) => {
     closeBigPicture(evt);
   }
 };
+
+export {showBigPicture};

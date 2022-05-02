@@ -1,6 +1,6 @@
 import {createComment} from '../Comment/Comment.js';
 
-export const comments = (arr) => {
+const comments = (arr) => {
   const socialComments = document.querySelector('.social__comments');
   const fragment = document.createDocumentFragment();
 
@@ -12,3 +12,6 @@ export const comments = (arr) => {
 
   return socialComments;
 };
+
+export {comments};
+

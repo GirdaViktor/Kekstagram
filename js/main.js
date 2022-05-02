@@ -1,8 +1,9 @@
-import {initialData} from './Mock/InitialData.js';
-import {createData} from './Mock/CreateData.js';
-import {getGallery} from './Gallery/Gallery.js';
-
 import './UploadFile/UploadFile.js';
 import '../nouislider/nouislider.js';
+import {getGallery} from './Gallery/Gallery.js';
+import {getData} from './NetworkData/NetworkData.js';
+import {setPictureFormSubmit} from './UploadFile/UploadFile.js';
+import {onUploadSuccess, onUploadError} from './Utils/Utils.js';
 
-getGallery(createData(initialData));
+getData(getGallery);
+setPictureFormSubmit(onUploadSuccess, onUploadError);

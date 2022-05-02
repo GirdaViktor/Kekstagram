@@ -30,7 +30,7 @@ const getComments = (obj) => {
   return comments;
 };
 
-export const createData = (obj) => {
+const createData = (obj) => {
   const {start, end} = obj.countPreview;
   const data = [];
   const {min, max} = obj.likes;
@@ -47,3 +47,5 @@ export const createData = (obj) => {
 
   return data;
 };
+
+export {createData};

@@ -3,7 +3,7 @@ import {isEscapeKey} from '../Utils/Utils.js';
 const textDescription = document.querySelector('.text__description');
 const textHashTags = document.querySelector('.text__hashtags');
 
-export const clearFormItem = (evt) => {
+const clearFormItem = (evt) => {
   if (evt.target.closest('input') || evt.target.closest('textarea')) {
     if(isEscapeKey(evt)) {
       evt.stopPropagation();
@@ -13,7 +13,7 @@ export const clearFormItem = (evt) => {
   }
 };
 
-export const validationForm = () => {
+const validationForm = () => {
   const checkDuplicates = (array) => (new Set(array)).size !== array.length;
 
   const validationComment = () => {
@@ -79,3 +79,5 @@ export const validationForm = () => {
   textDescription.addEventListener('input', validationComment);
   textHashTags.addEventListener('input', validationHashTags);
 };
+
+export {clearFormItem, validationForm};

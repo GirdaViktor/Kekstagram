@@ -1,5 +1,6 @@
 import '../Slider/slider.js';
 import {updatePreviewEffect} from '../UploadFile/UploadFile.js';
+
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
 const imgPreview = document.querySelector('.img-upload__preview img');
@@ -15,7 +16,7 @@ const getCurrentEffect = () => {
   return classNameEffect;
 };
 
-export const activeSlider = (effect) => {
+const activeSlider = (effect) => {
   imgUploadEffectLevel.style = 'display: block';
 
   noUiSlider.create(effectLevelSlider, {
@@ -33,9 +34,10 @@ export const activeSlider = (effect) => {
   });
 };
 
-export const destroySlider = () => {
+const destroySlider = () => {
   imgUploadEffectLevel.style = 'display: none';
   imgPreview.style.filter = '';
   effectLevelSlider.noUiSlider.destroy();
 };
 
+export {activeSlider, destroySlider};
