@@ -4,6 +4,10 @@ import {getGallery} from './Gallery/Gallery.js';
 import {getData} from './NetworkData/NetworkData.js';
 import {setPictureFormSubmit} from './UploadFile/UploadFile.js';
 import {onUploadSuccess, onUploadError} from './Utils/Utils.js';
+import {sortFilter} from './Filters/Filters.js';
 
-getData(getGallery);
+getData((pictures) => {
+  getGallery(pictures);
+  sortFilter(pictures);
+});
 setPictureFormSubmit(onUploadSuccess, onUploadError);

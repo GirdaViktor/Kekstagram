@@ -29,6 +29,14 @@ const getShuffle = (arr) => {
   return newArr;
 };
 
+const getRandomPosts = (posts) => getShuffle(posts).slice(0, 10);
+
+// Функция сортировки
+const comparePosts = (postA, postB) => postB.comments.length - postA.comments.length;
+
+// Функция сортировки по популярности
+const sortByPopular = (pictures) => pictures.slice().sort(comparePosts);
+
 const isEscapeKey = (evt) => {
   return evt.key === 'Escape';
 };
@@ -95,4 +103,13 @@ const showMessage = () => {
   document.body.appendChild(messageElement);
 };
 
-export {getRandomInteger, getShuffle, isEscapeKey, onUploadSuccess, onUploadError, showMessage, showAlert};
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomInteger, getShuffle, getRandomPosts, sortByPopular, isEscapeKey, onUploadSuccess, onUploadError, showMessage, showAlert, debounce};
