@@ -8,7 +8,6 @@ const COMMENT_COUNT = 5;
 const showBigPicture = (obj) => {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
-  const overlay = document.querySelector('.big-picture.overlay');
 
   const cancelBigPicture = bigPicture.querySelector('.cancel');
   const commentsLoader = bigPicture.querySelector('.comments-loader');
@@ -64,7 +63,6 @@ const showBigPicture = (obj) => {
 
   document.addEventListener('keydown', closeBigPictureEscKeydown);
   cancelBigPicture.addEventListener('click', closeBigPicture);
-  overlay.addEventListener('click', closeBigPicture);
 };
 
 export {showBigPicture};
