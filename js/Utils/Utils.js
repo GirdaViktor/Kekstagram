@@ -1,6 +1,6 @@
 import {closeOverlay} from '../UploadFile/UploadFile.js';
 
-const ALERT_SHOW_TIME = 5000;
+const ALERT_SHOW_TIME = 500;
 const body = document.body;
 
 const getRandomInteger = (min, max) => {

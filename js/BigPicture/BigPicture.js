@@ -25,6 +25,7 @@ const showBigPicture = (obj) => {
     currentCommentsCountInt += 5;
     if (currentCommentsCountInt >= obj.comments.length) {
       currentCommentsCountInt = obj.comments.length;
+      commentsLoader.classList.add('hidden');
     }
     currentCommentsCount.textContent = currentCommentsCountInt;
     comments(obj.comments, currentCommentsCountInt);
