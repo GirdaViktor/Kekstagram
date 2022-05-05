@@ -677,7 +677,7 @@
     }
 
     function testRange(parsed, entry) {
-        // Filter incorrect input.
+        // Filters incorrect input.
         if (typeof entry !== "object" || Array.isArray(entry)) {
             throw new Error("noUiSlider (" + VERSION + "): 'range' is not an object.");
         }
@@ -1632,7 +1632,7 @@
 
         // Provide a clean event with standardized offset values.
         function fixEvent(e, pageOffset, eventTarget) {
-            // Filter the event to register the type, which can be
+            // Filters the event to register the type, which can be
             // touch, mouse or pointer. Offset changes need to be
             // made on an event specific basis.
             var touch = e.type.indexOf("touch") === 0;

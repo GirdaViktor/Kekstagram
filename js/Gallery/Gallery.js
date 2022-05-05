@@ -1,4 +1,5 @@
 import {getPicture} from '../Picture/Picture.js';
+import {sortFilter} from '../Filters/Filters.js';
 
 const getGallery = (arr) => {
   const pictures = document.querySelector('.pictures');
@@ -9,6 +10,13 @@ const getGallery = (arr) => {
   });
 
   pictures.appendChild(fragment);
+  sortFilter(arr);
 };
 
-export {getGallery};
+const removePictures = () => {
+  document.querySelectorAll('.picture').forEach((item) => {
+    item.remove();
+  });
+};
+
+export {getGallery, removePictures};
